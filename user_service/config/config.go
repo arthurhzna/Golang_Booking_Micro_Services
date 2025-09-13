@@ -2,7 +2,6 @@ package config
 
 import (
 	"github.com/sirupsen/logrus"
-	_ "github.com/spf13/viper/remote"
 	"os"
 	"user-service/common/util"
 )

@@ -6,7 +6,7 @@ RESET  := $(shell tput -Txterm sgr0)
 
 ## Live reload:
 watch-prepare: ## Install the tools required for the watch command
-	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh
+	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | bash
 
 watch: ## Run the service with hot reload
 	bin/air
