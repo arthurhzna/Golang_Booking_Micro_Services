@@ -6,33 +6,21 @@ RESET  := $(shell tput -Txterm sgr0)
 
 ## Live reload:
 watch-prepare: ## Install the tools required for the watch command
-	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | bash
+	curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh
 
 watch: ## Run the service with hot reload
 	bin/air
 
 ## Build:
 build: ## Build the service
-	go build -o order-service
+	go build -o user-service
 
 ## Docker:
 docker-compose: ## Start the service in docker
 	docker-compose up -d --build --force-recreate
 
 docker-build: ## Build the Docker image with a specified tag
-	@echo "$(CYAN)Building Docker image...$(RESET)"
-	@if [ -z "$(tag)" ]; then \
-		echo "$(YELLOW)Error: Please specify the 'tag' parameter, e.g., make docker-build tag=1.0.0$(RESET)"; \
-		exit 1; \
-	fi
-	docker build --platform linux/amd64 -t sikoding20/payment-service:$(tag) .
-	@echo "$(GREEN)Docker image built with tag '$(tag)'$(RESET)"
+	docker build --platform linux/amd64 -t arthurhozanna/user-service:$(tag) .
 
 docker-push: ## Build the Docker image with a specified tag
-	@echo "$(CYAN)Building Docker image...$(RESET)"
-	@if [ -z "$(tag)" ]; then \
-		echo "$(YELLOW)Error: Please specify the 'tag' parameter, e.g., make docker-push tag=1.0.0$(RESET)"; \
-		exit 1; \
-	fi
-	docker push sikoding20/payment-service:$(tag)
-	@echo "$(GREEN)Docker image built with tag '$(tag)'$(RESET)"
+	docker push arthurhozanna/user-service:$(tag)
