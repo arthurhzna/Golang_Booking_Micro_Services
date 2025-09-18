@@ -1,12 +1,13 @@
 package clients
 
 import (
-	"github.com/midtrans/midtrans-go"
-	"github.com/midtrans/midtrans-go/snap"
-	"github.com/sirupsen/logrus"
 	errConstant "payment-service/constants/error/payment"
 	"payment-service/domain/dto"
 	"time"
+
+	"github.com/midtrans/midtrans-go"
+	"github.com/midtrans/midtrans-go/snap"
+	"github.com/sirupsen/logrus"
 )
 
 type MidtransClient struct {

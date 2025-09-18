@@ -4,14 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 	errWrap "payment-service/common/error"
 	"payment-service/constants"
 	errConstant "payment-service/constants/error"
 	errPayment "payment-service/constants/error/payment"
 	"payment-service/domain/dto"
 	"payment-service/domain/models"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type PaymentRepository struct {
