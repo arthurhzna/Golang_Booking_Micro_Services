@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/bcrypt"
 	"strings"
 	"time"
 	"user-service/config"
@@ -12,6 +10,9 @@ import (
 	"user-service/domain/dto"
 	"user-service/domain/models"
 	"user-service/repositories"
+
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -43,7 +44,7 @@ func (u *UserService) Login(ctx context.Context, req *dto.LoginRequest) (*dto.Lo
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err != nil {
-		return nil, err
+		return nil, errConstant.ErrPasswordInCorrect
 	}
 
 	expirationTime := time.Now().Add(time.Duration(config.Config.JwtExpirationTime) * time.Minute).Unix()

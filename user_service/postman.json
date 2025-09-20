@@ -1,0 +1,137 @@
+{
+  "info": {
+    "name": "user-service (local)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection untuk testing endpoint user-service (base: http://localhost:8001)"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const signatureKey = pm.collectionVariables.get('signatureKey') || 'arthur';",
+          "const serviceName = pm.collectionVariables.get('x_service_name') || 'user-service';",
+          "const requestAt = new Date().toISOString();",
+          "pm.collectionVariables.set('x_request_at', requestAt);",
+          "const validateKey = serviceName + ':' + signatureKey + ':' + requestAt;",
+          "const apiKey = CryptoJS.SHA256(validateKey).toString();",
+          "pm.collectionVariables.set('x_api_key', apiKey);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8001" },
+    { "key": "signatureKey", "value": "arthur" },
+    { "key": "x_service_name", "value": "user-service" },
+    { "key": "x_request_at", "value": "" },
+    { "key": "x_api_key", "value": "" },
+    { "key": "bearer_token", "value": "PLACEHOLDER_BEARER_TOKEN" }
+  ],
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api","v1","auth","login"]
+            }
+          }
+        },
+        {
+          "name": "POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"username\": \"johndoe\",\n  \"password\": \"password123\",\n  \"confirmPassword\": \"password123\",\n  \"email\": \"john@example.com\",\n  \"phoneNumber\": \"081234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api","v1","auth","register"]
+            }
+          }
+        },
+        {
+          "name": "GET /auth/user (current)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/user",
+              "host": ["{{base_url}}"],
+              "path": ["api","v1","auth","user"]
+            }
+          }
+        },
+        {
+          "name": "GET /auth/:uuid",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/{{uuid}}",
+              "host": ["{{base_url}}"],
+              "path": ["api","v1","auth","{{uuid}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT /auth/:uuid (update)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"username\": \"johndoe\",\n  \"email\": \"john.updated@example.com\",\n  \"phoneNumber\": \"081234567891\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/{{uuid}}",
+              "host": ["{{base_url}}"],
+              "path": ["api","v1","auth","{{uuid}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

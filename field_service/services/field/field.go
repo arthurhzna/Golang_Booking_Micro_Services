@@ -10,11 +10,13 @@ import (
 	"field-service/domain/models"
 	"field-service/repositories"
 	"fmt"
-	"github.com/google/uuid"
 	"io"
 	"mime/multipart"
 	"path"
+	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type FieldService struct {
@@ -153,6 +155,7 @@ func (f *FieldService) uploadImage(ctx context.Context, images []multipart.FileH
 		if err != nil {
 			return nil, err
 		}
+		url = strings.ReplaceAll(url, " ", "%20")
 		urls = append(urls, url)
 	}
 	return urls, nil
