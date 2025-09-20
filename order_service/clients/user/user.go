@@ -73,7 +73,7 @@ func (u *UserClient) GetUserByUUID(ctx context.Context, uuid uuid.UUID) (*UserDa
 		Set(constants.XServiceName, config2.Config.AppName).
 		Set(constants.XApiKey, apiKey).
 		Set(constants.XRequestAt, fmt.Sprintf("%d", unixTime)).
-		Get(fmt.Sprintf("%s/api/v1/auth/%s", u.client.BaseURL(), uuid))
+		Get(fmt.Sprintf("%s/api//v1auth/%s", u.client.BaseURL(), uuid))
 
 	resp, _, errs := request.EndStruct(&response)
 	if len(errs) > 0 {
