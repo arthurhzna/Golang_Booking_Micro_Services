@@ -1,202 +1,325 @@
 {
-    "info": {
-      "name": "field-service (local)",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "description": "Collection untuk testing endpoint field-service (base: http://localhost:8002)"
-    },
-    "event": [
-      {
-        "listen": "prerequest",
-        "script": {
-          "type": "text/javascript",
-          "exec": [
-            "const signatureKey = pm.collectionVariables.get('signatureKey') || 'arthur';",
-            "const serviceName = pm.collectionVariables.get('x_service_name') || 'field-service';",
-            "const requestAt = Math.floor(Date.now() / 1000).toString();",
-            "pm.collectionVariables.set('x_request_at', requestAt);",
-            "const validateKey = serviceName + ':' + signatureKey + ':' + requestAt;",
-            "const apiKey = CryptoJS.SHA256(validateKey).toString();",
-            "pm.collectionVariables.set('x_api_key', apiKey);"
-          ]
+  "info": {
+    "name": "field-service (local)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection untuk testing endpoint field-service (base: http://localhost:8002)"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const signatureKey = pm.collectionVariables.get('signatureKey') || 'arthur';",
+          "const serviceName = pm.collectionVariables.get('x_service_name') || 'field-service';",
+          "const requestAt = Math.floor(Date.now() / 1000).toString();",
+          "pm.collectionVariables.set('x_request_at', requestAt);",
+          "const validateKey = serviceName + ':' + signatureKey + ':' + requestAt;",
+          "const apiKey = CryptoJS.SHA256(validateKey).toString();",
+          "pm.collectionVariables.set('x_api_key', apiKey);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8002" },
+    { "key": "signatureKey", "value": "arthur" },
+    { "key": "x_service_name", "value": "field-service" },
+    { "key": "x_request_at", "value": "" },
+    { "key": "x_api_key", "value": "" },
+    { "key": "bearer_token", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7InV1aWQiOiI4MjhhODg3OS01YWQ2LTRjY2QtOTBjZS02Njg1NzRhYzMwNWYiLCJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsInBob25lTnVtYmVyIjoiMDg1NzEyMzQ1Njc4In0sImV4cCI6MTc1ODQ0OTcwMH0.SYlZ0eZqVrwQDDRUKdVMfVTdT0i3Bbto3rFkNoceF4A" }
+  ],
+  "item": [
+    {
+      "name": "Field",
+      "item": [
+        {
+          "name": "GET /api/v1/field (public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field", "host": ["{{base_url}}"], "path": ["api","v1","field"] }
+          }
+        },
+        {
+          "name": "GET /api/v1/field/:uuid (public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","{{uuid}}"] }
+          }
+        },
+        {
+          "name": "GET /api/v1/field/pagination (auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/pagination?page=1&limit=10", "host": ["{{base_url}}"], "path": ["api","v1","field","pagination"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "10" }] }
+          }
+        },
+        {
+          "name": "POST /api/v1/field (auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Lapangan A",
+                  "type": "text"
+                },
+                {
+                  "key": "code",
+                  "value": "A001",
+                  "type": "text"
+                },
+                {
+                  "key": "pricePerHour",
+                  "value": "100000",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field", "host": ["{{base_url}}"], "path": ["api","v1","field"] }
+          }
+        },
+        {
+          "name": "PUT /api/v1/field/:uuid (auth)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Lapangan A Updated", "type": "text" },
+                { "key": "code", "value": "A001", "type": "text" },
+                { "key": "pricePerHour", "value": "120000", "type": "text" },
+                { "key": "images", "type": "file", "src": [] }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","{{uuid}}"] }
+          }
+        },
+        {
+          "name": "DELETE /api/v1/field/:uuid (auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","{{uuid}}"] }
+          }
         }
-      }
-    ],
-    "variable": [
-      { "key": "base_url", "value": "http://localhost:8002" },
-      { "key": "signatureKey", "value": "arthur" },
-      { "key": "x_service_name", "value": "field-service" },
-      { "key": "x_request_at", "value": "" },
-      { "key": "x_api_key", "value": "" },
-      { "key": "bearer_token", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7InV1aWQiOiI4MjhhODg3OS01YWQ2LTRjY2QtOTBjZS02Njg1NzRhYzMwNWYiLCJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsInBob25lTnVtYmVyIjoiMDg1NzEyMzQ1Njc4In0sImV4cCI6MTc1ODQ0OTcwMH0.SYlZ0eZqVrwQDDRUKdVMfVTdT0i3Bbto3rFkNoceF4A" }
-    ],
-    "item": [
-      {
-        "name": "Field",
-        "item": [
-          {
-            "name": "GET /api/v1/field (public)",
-            "request": {
-              "method": "GET",
-              "header": [
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "url": { "raw": "{{base_url}}/api/v1/field", "host": ["{{base_url}}"], "path": ["api","v1","field"] }
-            }
-          },
-          {
-            "name": "GET /api/v1/field/:uuid (public)",
-            "request": {
-              "method": "GET",
-              "header": [
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "url": { "raw": "{{base_url}}/api/v1/field/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","{{uuid}}"] }
-            }
-          },
-          {
-            "name": "GET /api/v1/field/pagination (auth)",
-            "request": {
-              "method": "GET",
-              "header": [
-                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "url": { "raw": "{{base_url}}/api/v1/field/pagination", "host": ["{{base_url}}"], "path": ["api","v1","field","pagination"] }
-            }
-          },
-          {
-            "name": "POST /api/v1/field (auth)",
-            "request": {
-              "method": "POST",
-              "header": [
-                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "body": {
-                "mode": "formdata",
-                "formdata": [
-                  {
-                    "key": "name",
-                    "value": "Lapangan A",
-                    "type": "text"
-                  },
-                  {
-                    "key": "code",
-                    "value": "A001",
-                    "type": "text"
-                  },
-                  {
-                    "key": "pricePerHour",
-                    "value": "100000",
-                    "type": "text"
-                  },
-                  {
-                    "key": "images",
-                    "type": "file",
-                    "src": []
-                  }
-                ]
-              },
-              "url": { "raw": "{{base_url}}/api/v1/field", "host": ["{{base_url}}"], "path": ["api","v1","field"] }
-            }
+      ]
+    },
+    {
+      "name": "Field Schedule",
+      "item": [
+        {
+          "name": "GET /api/v1/field/schedule/lists/:uuid (public)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/lists/{{uuid}}?date=2025-10-01", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","lists","{{uuid}}"], "query": [{ "key": "date", "value": "2025-10-01" }] }
           }
-        ]
-      },
-      {
-        "name": "Field Schedule",
-        "item": [
-          {
-            "name": "GET /api/v1/field/schedule/lists/:uuid (public)",
-            "request": {
-              "method": "GET",
-              "header": [
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "url": { "raw": "{{base_url}}/api/v1/field/schedule/lists/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","lists","{{uuid}}"] }
-            }
-          },
-          {
-            "name": "PATCH /api/v1/field/schedule/status (public)",
-            "request": {
-              "method": "PATCH",
-              "header": [
-                { "key": "Content-Type", "value": "application/json" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"fieldScheduleId\": \"<uuid>\",\n  \"status\": \"booked\"\n}"
-              },
-              "url": { "raw": "{{base_url}}/api/v1/field/schedule/status", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","status"] }
-            }
-          },
-          {
-            "name": "POST /api/v1/field/schedule (auth)",
-            "request": {
-              "method": "POST",
-              "header": [
-                { "key": "Content-Type", "value": "application/json" },
-                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"fieldId\": \"<uuid>\",\n  \"date\": \"2025-10-01\",\n  \"timeId\": \"<uuid>\",\n  \"price\": 100000\n}"
-              },
-              "url": { "raw": "{{base_url}}/api/v1/field/schedule", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule"] }
-            }
+        },
+        {
+          "name": "PATCH /api/v1/field/schedule/status (public)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fieldScheduleIDs\": [\"<uuid>\"],\n  \"status\": \"booked\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/status", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","status"] }
           }
-        ]
-      },
-      {
-        "name": "Time",
-        "item": [
-          {
-            "name": "GET /api/v1/time (auth)",
-            "request": {
-              "method": "GET",
-              "header": [
-                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "url": { "raw": "{{base_url}}/api/v1/time", "host": ["{{base_url}}"], "path": ["api","v1","time"] }
-            }
-          },
-          {
-            "name": "POST /api/v1/time (auth)",
-            "request": {
-              "method": "POST",
-              "header": [
-                { "key": "Content-Type", "value": "application/json" },
-                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
-                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
-                { "key": "X-Request-At", "value": "{{x_request_at}}" },
-                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
-              ],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n  \"start\": \"08:00\",\n  \"end\": \"09:00\"\n}"
-              },
-              "url": { "raw": "{{base_url}}/api/v1/time", "host": ["{{base_url}}"], "path": ["api","v1","time"] }
-            }
+        },
+        {
+          "name": "POST /api/v1/field/schedule (auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fieldID\": \"<uuid>\",\n  \"date\": \"2025-10-01\",\n  \"timeIDs\": [\"<uuid>\"]\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule"] }
           }
-        ]
-      }
-    ]
-  }
+        },
+        {
+          "name": "POST /api/v1/field/schedule/one-month (auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fieldID\": \"<uuid>\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/one-month", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","one-month"] }
+          }
+        },
+        {
+          "name": "GET /api/v1/field/schedule/pagination (auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/pagination?page=1&limit=10", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","pagination"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "10" }] }
+          }
+        },
+        {
+          "name": "GET /api/v1/field/schedule/:uuid (auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","{{uuid}}"] }
+          }
+        },
+        {
+          "name": "PUT /api/v1/field/schedule/:uuid (auth)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2025-10-02\",\n  \"timeID\": \"<uuid>\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","{{uuid}}"] }
+          }
+        },
+        {
+          "name": "DELETE /api/v1/field/schedule/:uuid (auth)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/field/schedule/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","field","schedule","{{uuid}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Time",
+      "item": [
+        {
+          "name": "GET /api/v1/time (auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/time", "host": ["{{base_url}}"], "path": ["api","v1","time"] }
+          }
+        },
+        {
+          "name": "GET /api/v1/time/:uuid (auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/v1/time/{{uuid}}", "host": ["{{base_url}}"], "path": ["api","v1","time","{{uuid}}"] }
+          }
+        },
+        {
+          "name": "POST /api/v1/time (auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+              { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+              { "key": "X-Request-At", "value": "{{x_request_at}}" },
+              { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startTime\": \"08:00:00\",\n  \"endTime\": \"09:00:00\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/v1/time", "host": ["{{base_url}}"], "path": ["api","v1","time"] }
+          }
+        }
+      ]
+    }
+  ]
+}

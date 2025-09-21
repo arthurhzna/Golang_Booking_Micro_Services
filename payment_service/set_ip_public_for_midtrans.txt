@@ -1,0 +1,19 @@
+Make VM Compute Engine Google Cloud
+
+-> 35.222.34.xxx (user->arthurhozana123)
+-> allow tcp:3000 
+
+prepare ssh, your can use powershell or puttygen
+
+your vm :
+sudo nano /etc/ssh/sshd_config
+---> GatewayPorts yes
+sudo systemctl restart sshd
+
+your pc: 
+ssh -N -R 0.0.0.0:3000:127.0.0.1:8003 arthurhozana123@35.222.34.xxx
+
+now midtrans can hit endpoint webhooks
+
+but it doesnt work because Midtrans only accepts HTTPS APIs.
+you can use Ngrok as a simple solution.

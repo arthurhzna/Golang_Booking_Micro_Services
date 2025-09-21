@@ -1,0 +1,127 @@
+{
+    "info": {
+      "name": "payment-service (local)",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "description": "Collection untuk testing endpoint payment-service (base: http://localhost:8003)"
+    },
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            "const signatureKey = pm.collectionVariables.get('signatureKey') || 'arthur';",
+            "const serviceName = pm.collectionVariables.get('x_service_name') || 'payment-service';",
+            "const requestAt = Math.floor(Date.now() / 1000).toString();",
+            "pm.collectionVariables.set('x_request_at', requestAt);",
+            "const validateKey = serviceName + ':' + signatureKey + ':' + requestAt;",
+            "const apiKey = CryptoJS.SHA256(validateKey).toString();",
+            "pm.collectionVariables.set('x_api_key', apiKey);"
+          ]
+        }
+      }
+    ],
+    "variable": [
+      { "key": "base_url", "value": "http://localhost:8003" },
+      { "key": "signatureKey", "value": "arthur" },
+      { "key": "x_service_name", "value": "payment-service" },
+      { "key": "x_request_at", "value": "" },
+      { "key": "x_api_key", "value": "" },
+      {
+        "key": "bearer_token",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7InV1aWQiOiI4Yjc5NGI3YS0xN2VhLTQzNWQtOTRjYi03YTM3NDZkYmZiZTgiLCJuYW1lIjoiSm9obiBEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJwaG9uZU51bWJlciI6IjA4MTIzNDU2Nzg5MCJ9LCJleHAiOjE3NTg1Mjc4MDV9.ncDBF6bQd4yE4acZqUq8hZOw-U9P2ptzHkcQzCP20zc"
+      }
+    ],
+    "item": [
+      {
+        "name": "Payment",
+        "item": [
+          {
+            "name": "POST /payment/webhook (public)",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+                { "key": "X-Request-At", "value": "{{x_request_at}}" },
+                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"va_numbers\": [\n    {\n      \"bank\": \"bca\",\n      \"va_number\": \"1234567890\"\n    }\n  ],\n  \"transaction_time\": \"2025-09-21 12:34:56\",\n  \"transaction_status\": \"capture\",\n  \"transaction_id\": \"c6d754c5-1f9e-488a-81b2-d8d7ef443c75\",\n  \"status_message\": \"Success\",\n  \"status_code\": \"200\",\n  \"signature_key\": \"your_signature_key_here\",\n  \"settlement_time\": \"2025-09-21 12:35:00\",\n  \"payment_type\": \"bank_transfer\",\n  \"payment_amount\": [\n    {\n      \"amount\": \"100000\",\n      \"currency\": \"IDR\"\n    }\n  ],\n  \"order_id\": \"c6d754c5-1f9e-488a-81b2-d8d7ef443c75\",\n  \"merchant_id\": \"your_merchant_id_here\",\n  \"gross_amount\": \"100000\",\n  \"fraud_status\": \"accept\",\n  \"currency\": \"IDR\",\n  \"acquirer\": \"bca\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/payment/webhook",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "payment", "webhook"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "GET /payment (auth) - list (pagination)",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+                { "key": "X-Request-At", "value": "{{x_request_at}}" },
+                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/v1/payment?page=1&limit=10",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "payment"],
+                "query": [
+                  { "key": "page", "value": "1" },
+                  { "key": "limit", "value": "10" }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "GET /payment/:uuid (auth)",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+                { "key": "X-Request-At", "value": "{{x_request_at}}" },
+                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/v1/payment/{{uuid}}",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "payment", "{{uuid}}"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "POST /payment (auth) - create payment",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{bearer_token}}" },
+                { "key": "X-Service-Name", "value": "{{x_service_name}}" },
+                { "key": "X-Request-At", "value": "{{x_request_at}}" },
+                { "key": "X-Api-Key", "value": "{{x_api_key}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"orderID\": \"<order-uuid>\",\n  \"amount\": 100000,\n  \"expiredAt\": \"2025-10-01T09:00:00+07:00\",\n  \"description\": \"Pembayaran lapangan\",\n  \"customerDetail\": {\n    \"name\": \"Nama Customer\",\n    \"email\": \"cust@example.com\",\n    \"phone\": \"08123456789\"\n  },\n  \"itemDetails\": [\n    {\n      \"id\": \"<item-uuid>\",\n      \"amount\": 100000,\n      \"name\": \"Sewa Lapangan\",\n      \"quantity\": 1\n    }\n  ]\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/payment",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "payment"]
+              }
+            },
+            "response": []
+          }
+        ]
+      }
+    ]
+  }

@@ -83,6 +83,8 @@ func (f *FieldService) GetAllWithoutPagination(ctx context.Context) ([]dto.Field
 			Name:         field.Name,
 			PricePerHour: field.PricePerHour,
 			Images:       field.Images,
+			CreatedAt:    field.CreatedAt,
+			UpdatedAt:    field.UpdatedAt,
 		})
 	}
 
