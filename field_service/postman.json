@@ -27,7 +27,7 @@
     { "key": "x_service_name", "value": "field-service" },
     { "key": "x_request_at", "value": "" },
     { "key": "x_api_key", "value": "" },
-    { "key": "bearer_token", "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7InV1aWQiOiI4MjhhODg3OS01YWQ2LTRjY2QtOTBjZS02Njg1NzRhYzMwNWYiLCJuYW1lIjoiQWRtaW5pc3RyYXRvciIsInVzZXJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsInBob25lTnVtYmVyIjoiMDg1NzEyMzQ1Njc4In0sImV4cCI6MTc1ODQ0OTcwMH0.SYlZ0eZqVrwQDDRUKdVMfVTdT0i3Bbto3rFkNoceF4A" }
+    { "key": "bearer_token", "value": "PLACEHOLDER_BEARER_TOKEN" }
   ],
   "item": [
     {

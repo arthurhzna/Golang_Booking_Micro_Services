@@ -3,7 +3,7 @@ services:
   payment-service:
     container_name: payment-service
     platform: linux/amd64
-    image: arthurhozanna/payment-service:8
+    image: arthurhozanna/payment-service:10
     ports:
       - "8003:8003"
     env_file:

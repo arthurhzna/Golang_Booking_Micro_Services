@@ -27,10 +27,7 @@
       { "key": "x_service_name", "value": "payment-service" },
       { "key": "x_request_at", "value": "" },
       { "key": "x_api_key", "value": "" },
-      {
-        "key": "bearer_token",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyIjp7InV1aWQiOiI4Yjc5NGI3YS0xN2VhLTQzNWQtOTRjYi03YTM3NDZkYmZiZTgiLCJuYW1lIjoiSm9obiBEb2UiLCJ1c2VybmFtZSI6ImpvaG5kb2UiLCJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJwaG9uZU51bWJlciI6IjA4MTIzNDU2Nzg5MCJ9LCJleHAiOjE3NTg1Mjc4MDV9.ncDBF6bQd4yE4acZqUq8hZOw-U9P2ptzHkcQzCP20zc"
-      }
+      { "key": "bearer_token", "value": "PLACEHOLDER_BEARER_TOKEN" }
     ],
     "item": [
       {
