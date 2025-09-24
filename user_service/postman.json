@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "usser-service (local)",
+    "name": "user-service (local)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": "Collection untuk testing endpoint user-service (base: http://localhost:8001)"
   },

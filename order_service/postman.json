@@ -1,6 +1,6 @@
 {
     "info": {
-      "name": "aorder-service (local)",
+      "name": "order-service (local)",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
       "description": "Collection untuk testing endpoint order-service (base: http://localhost:8004)"
     },
