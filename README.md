@@ -214,8 +214,3 @@ Base path: `/`
 - Config: Each service has `config.json` and `config.json.example` and loads configuration from Consul or environment. See top-level `project/docker-compose.yaml` for local stack composition.
 
 ---
-
-If you want, I can:
-- Add example request/response JSON bodies for each endpoint.
-- Generate an OpenAPI (Swagger) spec from route signatures and DTOs.
-- Split this README into per-service README files under each service directory.
