@@ -214,6 +214,7 @@ If you like Certbot, please consider supporting our work by:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 arthurhozana123@app-server:/etc/nginx/sites-available$
 
+in midtrans dont forget to add your endpoint webhook from payment
 
 forward each port 
 lastly regist topic kafka in port 8070

@@ -214,6 +214,7 @@ Certbot will schedule automatic renewals.
 - `payment_service`
 - `user_service`
 - **Kafka topics**: Register needed Kafka topics using the Kafka UI running on port `8070` (access `http://<your-host>:8070`). Use the UI to create the topics used by services (for example: `order-created`, `payment-updated`), or create topics via the `kafka-topics` CLI against the broker.
+- **Midtrans webhook**: If you use Midtrans for payments, configure the Midtrans dashboard to call your payment webhook endpoint on this service. Example webhook URL (replace host/port as needed): `http://<your-host>:8002/payment/webhook`. Ensure the endpoint is reachable from Midtrans and that port forwarding / firewall rules allow inbound requests from Midtrans.
 
 ---
 
