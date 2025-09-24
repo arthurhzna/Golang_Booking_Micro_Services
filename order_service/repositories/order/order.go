@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 	errWrap "order-service/common/error"
 	errConstant "order-service/constants/error"
 	errOrder "order-service/constants/error/order"
@@ -13,6 +11,9 @@ import (
 	"order-service/domain/models"
 	"strconv"
 	"time"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type OrderRepository struct {
@@ -136,6 +137,7 @@ func (o *OrderRepository) Create(
 	param *models.Order,
 ) (*models.Order, error) {
 	code, err := o.incrementCode(ctx)
+	fmt.Println("code", *code)
 	if err != nil {
 		return nil, err
 	}

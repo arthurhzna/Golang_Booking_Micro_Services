@@ -5,10 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github.com/didip/tollbooth"
-	"github.com/didip/tollbooth/limiter"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"payment-service/clients"
 	"payment-service/common/response"
@@ -16,6 +12,11 @@ import (
 	"payment-service/constants"
 	errConstant "payment-service/constants/error"
 	"strings"
+
+	"github.com/didip/tollbooth"
+	"github.com/didip/tollbooth/limiter"
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func HandlePanic() gin.HandlerFunc {
@@ -84,6 +85,7 @@ func validateAPIKey(c *gin.Context) error {
 func contains(roles []string, role string) bool {
 	for _, r := range roles {
 		if r == role {
+			fmt.Println("r", r)
 			return true
 		}
 	}
@@ -122,6 +124,7 @@ func Authenticate() gin.HandlerFunc {
 		}
 
 		tokenString := extractBearerToken(token)
+		fmt.Println("tokenString", tokenString)
 		tokenUser := c.Request.WithContext(context.WithValue(c.Request.Context(), constants.Token, tokenString))
 		c.Request = tokenUser
 		c.Next()

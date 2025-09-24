@@ -3,8 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/google/uuid"
-	"gorm.io/gorm"
 	"order-service/clients"
 	clientField "order-service/clients/field"
 	clientPayment "order-service/clients/payment"
@@ -16,6 +14,9 @@ import (
 	"order-service/domain/models"
 	"order-service/repositories"
 	"time"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type OrderService struct {
@@ -171,12 +172,10 @@ func (o *OrderService) Create(ctx context.Context, request *dto.OrderRequest) (*
 				FieldScheduleID: uuidParsed,
 			})
 		}
-
 		txErr = o.repository.GetOrderField().Create(ctx, tx, orderFieldSchedules)
 		if txErr != nil {
 			return txErr
 		}
-
 		txErr = o.repository.GetOrderHistory().Create(ctx, tx, &dto.OrderHistoryRequest{
 			Status:  constants.Pending.GetStatusString(),
 			OrderID: order.ID,

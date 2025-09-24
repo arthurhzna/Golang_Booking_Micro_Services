@@ -1,0 +1,110 @@
+.card {
+  border-radius: 15px;
+}
+.card.bordered {
+  border: 1px solid #e9ecef;
+}
+.card .img-wrapper-fieldlist {
+  height: 100%;
+  margin-bottom: 0;
+  border-radius: 0.9375rem;
+  overflow: hidden;
+}
+.card .meta-wrapper-fieldlist {
+  margin-top: 1rem;
+}
+.card .meta-wrapper-fieldlist h3 {
+  font-size: 1.125rem;
+  margin-bottom: 2px;
+}
+.card .meta-wrapper-fieldlist span {
+  font-size: 0.875rem;
+}
+.card.card-fieldlist {
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;
+  border-radius: 15px;
+}
+.card.card-fieldlist:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scale(1.1);
+  transition: 0.5s transform ease-in-out;
+  z-index: 2;
+}
+.card.card-fieldlist .img-wrapper-fieldlist {
+  z-index: 1;
+  margin: 0;
+  top: 100rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: scale(1.1);
+  transition: 0.25s transform ease-in-out;
+  border-radius: 15px;
+}
+.card.card-fieldlist .meta-wrapper-fieldlist {
+  z-index: 4;
+  color: #fff;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(0);
+  transition: 0.3s transform ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+.card.card-fieldlist:hover .meta-wrapper-fieldlist {
+  transform: translateY(-10px);
+}
+
+.card.card-fieldlist:hover .img-wrapper-fieldlist {
+  transform: scale(1);
+}
+
+.img-cover {
+  object-fit: cover;
+  height: 250px;
+  width: 100%;
+}
+
+.card.card-fieldlist .img-wrapper-fieldlist .hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease-in-out;
+  z-index: 3; /* Sama dengan meta-wrapper-fieldlist */
+  pointer-events: none; /* Nonaktifkan interaksi default saat tidak di-hover */
+}
+
+.card.card-fieldlist:hover .img-wrapper-fieldlist .hover-overlay {
+  opacity: 1;
+  pointer-events: auto; /* Aktifkan interaksi saat di-hover */
+}
+
+.card.card-fieldlist .img-wrapper-fieldlist .hover-overlay .btn {
+  z-index: 4; /* Berada di atas hover-overlay */
+  color: #fff;
+  padding: 5px;
+  border-radius: 7px;
+  font-size: 14px;
+  transition: background-color 0.3s ease-in-out;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=fieldlist1.css.map */

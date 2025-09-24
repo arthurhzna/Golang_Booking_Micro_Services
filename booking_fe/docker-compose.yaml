@@ -1,0 +1,22 @@
+name: booking-field-app
+services:
+  booking-fe:
+    container_name: booking-fe
+    image: arthurhozanna/booking-fe:5
+    ports:
+      - "3000:3000"
+    environment:
+      - CONSUL_HTTP_URL=${CONSUL_HTTP_URL}
+      - CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}
+      - CONSUL_HTTP_PATH=${CONSUL_HTTP_PATH}
+      - FIELD_API_URL=${FIELD_API_URL}
+      - FIELD_SERVICE_NAME=${FIELD_SERVICE_NAME}
+      - FIELD_SIGNATURE_KEY=${FIELD_SIGNATURE_KEY}
+      - USER_API_URL=${USER_API_URL}
+      - USER_SERVICE_NAME=${USER_SERVICE_NAME}
+      - USER_SIGNATURE_KEY=${USER_SIGNATURE_KEY}
+      - ORDER_API_URL=${ORDER_API_URL}
+      - ORDER_SERVICE_NAME=${ORDER_SERVICE_NAME}
+      - ORDER_SIGNATURE_KEY=${ORDER_SIGNATURE_KEY}
+    volumes:
+      - ./:/app

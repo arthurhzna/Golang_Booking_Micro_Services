@@ -39,8 +39,8 @@ pipeline {
       steps {
         script {
           echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-          if (env.GIT_BRANCH == 'origin/main') {
-            env.TARGET_BRANCH = 'main'
+          if (env.GIT_BRANCH == 'origin/master') {
+            env.TARGET_BRANCH = 'master'
           } else if (env.GIT_BRANCH == 'origin/development') {
             env.TARGET_BRANCH = 'development'
           }
@@ -102,7 +102,7 @@ pipeline {
           sh """
           git config --global user.name 'Jenkins CI'
           git config --global user.email 'jenkins@company.com'
-          git remote set-url origin https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com/arthurhzna/field_service_cicd
+          git remote set-url origin https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com/arthurhzna/field_service_cicd.git
           git add docker-compose.yaml
           git commit -m 'Update image version to ${TARGET_BRANCH}-${currentBuild.number} [skip ci]' || echo 'No changes to commit'
           git pull origin ${TARGET_BRANCH} --rebase
@@ -115,7 +115,7 @@ pipeline {
     stage('Deploy to Remote Server') {
       steps {
         script {
-          def targetDir = "/home/faisalilhami/mini-soccer-project/field-service"
+          def targetDir = "/home/arthurhozana123/go/field-service"
           def sshCommandToServer = """
           ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${USERNAME}@${HOST} '
             if [ -d "${targetDir}/.git" ]; then
@@ -124,14 +124,14 @@ pipeline {
                 git pull origin "${TARGET_BRANCH}"
             else
                 echo "Directory does not exist. Cloning repository."
-                git clone -b "${TARGET_BRANCH}" git@github.com:Mini-Soccer-Project/field-service.git "${targetDir}"
+                git clone -b "${TARGET_BRANCH}" git@github.com:arthurhzna/field_service_cicd.git "${targetDir}"
                 cd "${targetDir}"
             fi
 
             cp .env.example .env
             sed -i "s/^TIMEZONE=.*/TIMEZONE=Asia\\/Jakarta/" "${targetDir}/.env"
             sed -i "s/^CONSUL_HTTP_URL=.*/CONSUL_HTTP_URL=${CONSUL_HTTP_URL}/" "${targetDir}/.env"
-            sed -i "s/^CONSUL_HTTP_PATH=.*/CONSUL_HTTP_PATH=backend\\/field-service/" "${targetDir}/.env"
+            sed -i "s/^CONSUL_HTTP_PATH=.*/CONSUL_HTTP_PATH=field_service/" "${targetDir}/.env"
             sed -i "s/^CONSUL_HTTP_TOKEN=.*/CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}/" "${targetDir}/.env"
             sed -i "s/^CONSUL_WATCH_INTERVAL_SECONDS=.*/CONSUL_WATCH_INTERVAL_SECONDS=${CONSUL_WATCH_INTERVAL_SECONDS}/" "${targetDir}/.env"
             sudo docker compose up -d --build --force-recreate

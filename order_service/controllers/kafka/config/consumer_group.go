@@ -2,10 +2,12 @@ package kafka
 
 import (
 	"context"
-	"github.com/IBM/sarama"
-	"github.com/sirupsen/logrus"
+	"fmt"
 	"order-service/config"
 	"time"
+
+	"github.com/IBM/sarama"
+	"github.com/sirupsen/logrus"
 )
 
 type (
@@ -34,6 +36,7 @@ func (c *ConsumerGroup) Cleanup(sarama sarama.ConsumerGroupSession) error {
 func (c *ConsumerGroup) ConsumeClaim(session sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	messages := claim.Messages()
 	for message := range messages {
+		fmt.Println("message", message)
 		handler, ok := c.handler[TopicName(message.Topic)]
 		if !ok {
 			logrus.Errorf("handler for topic %s not found", message.Topic)

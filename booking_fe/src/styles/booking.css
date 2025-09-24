@@ -1,0 +1,113 @@
+/* Warna awal untuk teks "Available" */
+.card .status {
+  color: #D90E1E;
+  font-weight: bold;
+  margin-top: -5px;
+}
+
+.card {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* Warna teks menjadi putih ketika card dipilih */
+.card.selected .status {
+  color: white;
+}
+
+.clickable-card.booked {
+  color: white;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.clickable-card.booked .status {
+  color: white; /* Teks status "Booked" putih */
+}
+
+/* Latar belakang card ketika dipilih */
+.card.selected {
+  background-color: #D90E1E;
+  color: white; /* Mengubah warna teks lainnya menjadi putih */
+}
+
+.card .icon {
+  color: #D90E1E; /* Mengubah warna teks lainnya menjadi putih */
+}
+
+.card.selected .icon {
+  color: white; /* Mengubah warna teks lainnya menjadi putih */
+}
+
+.clickable-card {
+  cursor: pointer; /* Membuat cursor berubah menjadi pointer saat hover */
+  /* transition: background-color 0.3s ease, color 0.3s ease; */
+}
+
+.clickable-card.booked .icon {
+  color: white; /* Ikon putih untuk card dengan status "Booked" */
+}
+
+.fixed-bottom-btn {
+  position: fixed;
+  bottom: 0; /* Letakkan di bawah */
+  left: 0; /* Mulai dari kiri */
+  width: 100%; /* Lebar penuh */
+  height: 70px;
+  background-color: white; /* Latar belakang putih */
+  z-index: 1050; /* Prioritas tinggi agar muncul di atas elemen lain */
+  border-top: 1px solid #ddd; /* Opsional: Tambahkan garis atas untuk estetika */
+}
+
+.btn-pay {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 7px;
+  font-size: 14px;
+  background-color: #D90D1E;
+  color: white;
+}
+
+.btn-pay:hover {
+  color: white;
+}
+
+.btn-search {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 7px;
+  font-size: 14px;
+  margin-top: 10px;
+  background-color: #D90D1E;
+  color: white;
+}
+
+.btn-search:hover {
+  color: white;
+}
+
+@media (max-width: 767.98px) {
+  .description {
+    margin-top: 15px;
+  }
+
+  .card-schedule {
+    padding: 0;
+  }
+
+  .login-desktop {
+    display: block;
+  }
+
+  .time,
+  .status {
+    font-size: 0.75rem;
+  }
+
+  .card {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+}

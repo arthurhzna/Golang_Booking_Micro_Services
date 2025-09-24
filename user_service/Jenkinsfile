@@ -2,14 +2,14 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = 'user-service'
+    IMAGE_NAME = 'user-service'   
     DOCKER_CREDENTIALS = credentials('docker-credential')
     GITHUB_CREDENTIALS = credentials('github-credential')
     SSH_KEY = credentials('ssh-key')
     HOST = credentials('host')
-    USERNAME = credentials('username')
+    USERNAME = credentials('username')   
     CONSUL_HTTP_URL = credentials('consul-http-url')
-    CONSUL_HTTP_TOKEN = credentials('consul-http-token')
+    CONSUL_HTTP_TOKEN = credentials('consul-http-token')  
     CONSUL_WATCH_INTERVAL_SECONDS = 60
   }
 
@@ -20,9 +20,9 @@ pipeline {
           def commitMessage = sh(
             script: "git log -1 --pretty=%B",
             returnStdout: true
-          ).trim()
-
-          echo "Commit Message: ${commitMessage}"
+          ).trim()  
+ 
+          echo "Commit Message: ${commitMessage}" 
           if (commitMessage.contains("[skip ci]")) {
             echo "Skipping pipeline due to [skip ci] tag in commit message."
             currentBuild.result = 'ABORTED'
@@ -39,8 +39,8 @@ pipeline {
       steps {
         script {
           echo "GIT_BRANCH: ${env.GIT_BRANCH}"
-          if (env.GIT_BRANCH == 'origin/main') {
-            env.TARGET_BRANCH = 'main'
+          if (env.GIT_BRANCH == 'origin/master') {
+            env.TARGET_BRANCH = 'master'
           } else if (env.GIT_BRANCH == 'origin/development') {
             env.TARGET_BRANCH = 'development'
           }
@@ -106,7 +106,7 @@ pipeline {
           sh """
           git config --global user.name 'Jenkins CI'
           git config --global user.email 'jenkins@company.com'
-          git remote set-url origin https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com/Mini-Soccer-Project/user-service.git
+          git remote set-url origin https://${GITHUB_CREDENTIALS_USR}:${GITHUB_CREDENTIALS_PSW}@github.com/arthurhzna/user_service_cicd.git
           git add docker-compose.yaml
           git commit -m 'Update image version to ${TARGET_BRANCH}-${currentBuild.number} [skip ci]' || echo 'No changes to commit'
           git pull origin ${TARGET_BRANCH} --rebase
@@ -115,33 +115,38 @@ pipeline {
         }
       }
     }
-
     stage('Deploy to Remote Server') {
       steps {
-        script {
-          def targetDir = "/home/faisalilhami/mini-soccer-project/user-service"
-          def sshCommandToServer = """
-          ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${USERNAME}@${HOST} '
-            if [ -d "${targetDir}/.git" ]; then
-                echo "Directory exists. Pulling latest changes."
-                cd "${targetDir}"
-                git pull origin "${TARGET_BRANCH}"
-            else
-                echo "Directory does not exist. Cloning repository."
-                git clone -b "${TARGET_BRANCH}" git@github.com:Mini-Soccer-Project/user-service.git "${targetDir}"
-                cd "${targetDir}"
-            fi
+        withCredentials([
+          sshUserPrivateKey(credentialsId: 'ssh-key', keyFileVariable: 'SSH_KEY'),
+          string(credentialsId: 'host', variable: 'HOST'),
+          string(credentialsId: 'username', variable: 'USERNAME')
+        ]) {
+          script {
+            def targetDir = "/home/arthurhozana123/go/user-service"
+            def sshCommandToServer = """
+            ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${USERNAME}@${HOST} '
+              if [ -d "${targetDir}/.git" ]; then
+                  echo "Directory exists. Pulling latest changes."
+                  cd "${targetDir}"
+                  git pull origin "master"
+              else
+                  echo "Directory does not exist. Cloning repository."
+                  GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone -b "master" git@github.com:arthurhzna/user_service_cicd.git "${targetDir}"
+                  cd "${targetDir}"
+              fi
 
-            cp .env.example .env
-            sed -i "s/^TIMEZONE=.*/TIMEZONE=Asia\\/Jakarta/" "${targetDir}/.env"
-            sed -i "s/^CONSUL_HTTP_URL=.*/CONSUL_HTTP_URL=${CONSUL_HTTP_URL}/" "${targetDir}/.env"
-            sed -i "s/^CONSUL_HTTP_PATH=.*/CONSUL_HTTP_PATH=backend\\/user-service/" "${targetDir}/.env"
-            sed -i "s/^CONSUL_HTTP_TOKEN=.*/CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}/" "${targetDir}/.env"
-            sed -i "s/^CONSUL_WATCH_INTERVAL_SECONDS=.*/CONSUL_WATCH_INTERVAL_SECONDS=${CONSUL_WATCH_INTERVAL_SECONDS}/" "${targetDir}/.env"
-            sudo docker compose up -d --build --force-recreate
-          '
-          """
-          sh sshCommandToServer
+              cp .env.example .env
+              sed -i "s/^TIMEZONE=.*/TIMEZONE=Asia\\/Jakarta/" "${targetDir}/.env"
+              sed -i "s/^CONSUL_HTTP_URL=.*/CONSUL_HTTP_URL=${CONSUL_HTTP_URL}/" "${targetDir}/.env"
+              sed -i "s/^CONSUL_HTTP_PATH=.*/CONSUL_HTTP_PATH=user_service/" "${targetDir}/.env"
+              sed -i "s/^CONSUL_HTTP_TOKEN=.*/CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}/" "${targetDir}/.env"
+              sed -i "s/^CONSUL_WATCH_INTERVAL_SECONDS=.*/CONSUL_WATCH_INTERVAL_SECONDS=60/" "${targetDir}/.env"
+              sudo docker compose up -d --build --force-recreate
+            '
+            """
+            sh sshCommandToServer
+          } 
         }
       }
     }

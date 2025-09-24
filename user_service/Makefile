@@ -12,7 +12,7 @@ watch: ## Run the service with hot reload
 	bin/air
 
 ## Build:
-build: ## Build the service
+build: ## Build the service 
 	go build -o user-service
 
 ## Docker:

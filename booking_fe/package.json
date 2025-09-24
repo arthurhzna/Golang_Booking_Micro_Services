@@ -1,0 +1,44 @@
+{
+  "name": "mini-soccer-fe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "watch": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "consul": "ts-node src/library/consul.js"
+  },
+  "dependencies": {
+    "@types/consul": "^2.0.0",
+    "axios": "^1.7.9",
+    "consul": "^2.0.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.7",
+    "fs": "^0.0.1-security",
+    "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
+    "moment": "^2.30.1",
+    "next": "15.1.0",
+    "owl.carousel": "^2.3.4",
+    "path": "^0.12.7",
+    "react": "^19.0.0",
+    "react-datepicker": "^7.5.0",
+    "react-dom": "^19.0.0",
+    "react-owl-carousel": "^2.3.3",
+    "react-toastify": "^10.0.6",
+    "sweetalert2": "^11.15.1",
+    "swiper": "^11.1.15",
+    "ts-node": "^10.9.2",
+    "webpack": "^5.97.1"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^20.17.12",
+    "@types/react": "^19",
+    "@types/react-bootstrap-date-picker": "^4.0.12",
+    "@types/react-dom": "^19",
+    "typescript": "^5.7.3"
+  }
+}
