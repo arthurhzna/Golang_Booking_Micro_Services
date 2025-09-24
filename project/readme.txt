@@ -220,6 +220,3 @@ forward each port
 lastly regist topic kafka in port 8070
 done
 
-
-
-

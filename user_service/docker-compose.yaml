@@ -1,13 +1,9 @@
-name: booking-order-app # change this to your app name
+name: booking-order-app
 services:
-  user-service: # change this to your service name
-    container_name: user-service # change this to your service name
-    platform: linux/amd64
-    # image: arthurhozanna/user-service:42 # change this to your image name
-    build: 
-      context: .
-      dockerfile: Dockerfile
+  user-service:
+    container_name: user-service
+    image: arthurhozanna/user-service:17
     ports:
-      - "8001:8001" # change this to your port
+      - "8001:8001"
     env_file:
       - .env
